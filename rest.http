@@ -1,0 +1,21 @@
+POST http://localhost:3001/v1/user
+Content-Type: application/json
+
+{
+    "name":"Nityash Kumar",
+    "phone": "905808534",
+    "address": "jagatpura",
+    "company": "squalo solutions",
+    "email": "nityashkumar1732@gmail.com",
+    "password": "nityash1732"
+}
+
+###user sign in endpoint
+
+POST http://localhost:3001/v1/user/login
+Content-Type: application/json
+
+{
+    "email": "nityashkumar1732@gmail.com",
+    "password": "nityash1732"
+}
