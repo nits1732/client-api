@@ -3,6 +3,7 @@ const router=express.Router()
 const {route}=require("./ticket.router")
 const {insertUser, getUserByEmail} = require("../model/user/user.model")
 const {hashPassword, comparePassword}= require("../helpers/bcrypt.helper")
+const {createAccessJWT, createRefreshJWT}= require("../helpers/jwt.helper")
 
 router.all('/',(req, res,next)=>{
     // console.log(name)
@@ -46,9 +47,13 @@ router.post("/login",async (req,res)=>{
     if(!passFromDb)return res.json({status:"error", message:"Invaild Email or Password!"})
 
     const result= await comparePassword(password,passFromDb)
+    if(!result){
+        return res.json({status:"error", message:"Invaild Email or Password!"})
+    }
     console.log(result)
-
-    res.json({status:"Success", message:"Login Success !"})
+    const accessJWT= await createAccessJWT(user.email)
+    const refreshJWT= await createRefreshJWT(user.email)
+    res.json({status:"Success", message:"Login Success !", accessJWT, refreshJWT})
 })
 
 

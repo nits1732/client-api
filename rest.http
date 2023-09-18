@@ -6,8 +6,8 @@ Content-Type: application/json
     "phone": "905808534",
     "address": "jagatpura",
     "company": "squalo solutions",
-    "email": "nityashkumar1732@gmail.com",
-    "password": "nityash1732"
+    "email": "xyz@gmail.com",
+    "password": "123456789"
 }
 
 ###user sign in endpoint
@@ -16,6 +16,6 @@ POST http://localhost:3001/v1/user/login
 Content-Type: application/json
 
 {
-    "email": "nityashkumar1732@gmail.com",
-    "password": "nityash1732"
+    "email": "xyz@gmail.com",
+    "password": "123456789"
 }
