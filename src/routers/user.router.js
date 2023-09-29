@@ -1,16 +1,23 @@
 const express=require("express")
 const router=express.Router()
 const {route}=require("./ticket.router")
-const {insertUser, getUserByEmail} = require("../model/user/user.model")
+const {insertUser, getUserByEmail, getUserById} = require("../model/user/user.model")
 const {hashPassword, comparePassword}= require("../helpers/bcrypt.helper")
 const {createAccessJWT, createRefreshJWT}= require("../helpers/jwt.helper")
-
-router.all('/',(req, res,next)=>{
+const {userAuthorization} = require("../middlewares/authorization.middlewares")
+router.all("/",(req, res,next)=>{
     // console.log(name)
     // res.json({message:"Return from User Router"})
     next();
 })
 
+//Get user profile router
+router.get("/",userAuthorization ,async (req, res)=>{
+    // this is comming from database-->assumption
+    const _id= req.userId
+    const userProf=await getUserById(_id)
+    res.json({user : userProf})
+})
 //create the user account
 router.post('/',async(req,res)=>{
     const {name,phone,company,address,email,password}=req.body;

@@ -56,6 +56,18 @@ const storeUserRefreshJWT=(_id, token)=>{
         }
     })
 }
+const getUserById=async (_id)=>{
+    if (!_id) {
+        return null; // Return null instead of false for better handling of missing email
+    }
+
+    try {
+        const user = await UserSchema.findOne({ _id });
+        return user; // This will return the user object if found, or null if not found
+    } catch (error) {
+        throw error; // Throw the error for handling in the calling code
+    }
+}
 module.exports=(
-    {insertUser,getUserByEmail,storeUserRefreshJWT}
+    {insertUser,getUserByEmail,storeUserRefreshJWT,getUserById}
 )

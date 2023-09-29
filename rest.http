@@ -19,3 +19,9 @@ Content-Type: application/json
     "email": "xyz@gmail.com",
     "password": "123456789"
 }
+
+
+###Get a user profile endpoint
+
+GET http://localhost:3001/v1/user
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inh5ekBnbWFpbC5jb20iLCJpYXQiOjE2OTYwMDE3NjQsImV4cCI6MTY5NjAwMjY2NH0.35-HzYhbV-eSiVMG_FvfGbb-wIQXu4WFOcpN9ym3rI
