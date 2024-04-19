@@ -39,10 +39,13 @@ app.use(bodyParser.json());
 //Load Router
 const userRouter=require("./src/routers/user.router")
 const ticketRouter=require("./src/routers/ticket.router")
+const tokensRouter=require("./src/routers/tokens.router")
+
 
 //use router
 app.use("/v1/user",userRouter);
 app.use("/v1/ticket",ticketRouter);
+app.use("/v1/tokens",tokensRouter);
 
 // is is a middleware that execute during the app lifecycle handle reqest and response
 //handle error

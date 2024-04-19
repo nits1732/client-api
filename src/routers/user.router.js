@@ -1,10 +1,12 @@
 const express=require("express")
 const router=express.Router()
-const {route}=require("./ticket.router")
-const {insertUser, getUserByEmail, getUserById} = require("../model/user/user.model")
+const {route, notify}=require("./ticket.router")
+const {insertUser, getUserByEmail, getUserById, updatePassword} = require("../model/user/user.model")
 const {hashPassword, comparePassword}= require("../helpers/bcrypt.helper")
 const {createAccessJWT, createRefreshJWT}= require("../helpers/jwt.helper")
 const {userAuthorization} = require("../middlewares/authorization.middlewares")
+const {setPasswordResetPin, getPinByEmailPin, deletePin} = require("../model/ResetPin/ResetPin.model")
+const { emailProcesser } = require("../helpers/email.helper")
 router.all("/",(req, res,next)=>{
     // console.log(name)
     // res.json({message:"Return from User Router"})
@@ -63,5 +65,84 @@ router.post("/login",async (req,res)=>{
     res.json({status:"Success", message:"Login Success !", accessJWT, refreshJWT})
 })
 
+// Process to reset the password
+// A. create and send password reset pin Number
+// 1. recieve email
+// 2. check if the user exist or not
+// 3. create a unique 6 digit pin 
+// 4. email the pin
 
+// B. Update Password in the db 
+// 1. recieve email, pin, new password
+// 2. validate the pin
+// 3. encrypt the new password
+// 4. update the password in the db
+// 5. send email notifation that password is updated
+ 
+// C. Server side for validation
+// 1. create middleware to validate from data
+
+// router.post("/reset-password", async (req, res)=>{
+//     const {email} = req.body;
+//     const user= await getUserByEmail(email)
+//     if(user && user._id){
+//         const setPin= await setPasswordResetPin(email)
+//         res.json(setPin);
+//         // res.json(user)
+//     }
+//     res.json({status:"error", message:"If the email Exist , the password reset pin will be send sortly"});
+// })
+router.post("/reset-password", async (req, res) => {
+    const { email } = req.body;
+    // Early exit if email is not provided
+    if (!email) {
+        return res.status(400).json({ status: "error", message: "Email is required" });
+    }
+
+    try {
+        const user = await getUserByEmail(email);
+        // If no user is found, return an error message.
+        // Note: For security reasons, you might want to obscure whether the email exists or not.
+        if (!user || !user._id) {
+            return res.status(404).json({ status: "error", message: "If the email exists, the password reset pin will be sent shortly" });
+        }
+
+        // User exists, create and send the reset pin.
+        const setPin = await setPasswordResetPin(email);
+        await emailProcesser({email, pin: setPin.pin, type: 'request-new-password'});
+        //delete the pin from the db
+        return res.json({
+            status:"success",
+            message:"Send Successfully"
+        })
+    } catch (error) {
+        console.error('Error in /reset-password route:', error);
+        return res.status(500).json({ status: "error", message: "If email exist, Your Reset pin will be send  soon." });
+    }
+});
+
+
+router.patch("/reset-password",async(req,res)=>{
+    const {email, pin, newPassword}=req.body;
+    const getPin= await getPinByEmailPin(email,pin)
+    if(getPin._id){
+        const dbDate=getPin.addedAt;
+        const expireIn=1;
+        let expDate=dbDate.setDate(dbDate.getDate()+expireIn);
+        const today = new Date();
+        if(today>expDate){
+            return res.json({status:"error", message:"Invalid or expired pin"})
+        }
+
+        //encrypt the new password
+        const hashedPass=await hashPassword(newPassword);
+        const user=await updatePassword(email,hashedPass)
+        if(user._id){
+            await emailProcesser({email, type: 'update-password-success'});
+            deletePin(email,pin);
+            return res.json({status:"success", message:"Password has been updated"})
+        }
+    }
+    res.json({status:"error", message:"Unable to update the password"});
+})
 module.exports=router;

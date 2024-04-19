@@ -6,8 +6,8 @@ Content-Type: application/json
     "phone": "905808534",
     "address": "jagatpura",
     "company": "squalo solutions",
-    "email": "xyz@gmail.com",
-    "password": "123456789"
+    "email": "xyzp@gmail.com",
+    "password": "1234567892"
 }
 
 ###user sign in endpoint
@@ -16,12 +16,39 @@ POST http://localhost:3001/v1/user/login
 Content-Type: application/json
 
 {
-    "email": "xyz@gmail.com",
-    "password": "123456789"
+    "email": "xyzp@gmail.com",
+    "password": "password1"
 }
 
 
 ###Get a user profile endpoint
 
 GET http://localhost:3001/v1/user
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inh5ekBnbWFpbC5jb20iLCJpYXQiOjE2OTYwMDE3NjQsImV4cCI6MTY5NjAwMjY2NH0.35-HzYhbV-eSiVMG_FvfGbb-wIQXu4WFOcpN9ym3rI
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inh5enBAZ21haWwuY29tIiwiaWF0IjoxNzEzNDMxNTg0LCJleHAiOjE3MTM0MzI0ODR9.eHrBaMoqkoC5aZrLxBztEb-ZbHvpnqXkHHIQmC_qbP0
+
+
+###Token routers
+
+###Get refreshed Token
+GET http://localhost:3001/v1/tokens
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inh5enBAZ21haWwuY29tIiwiaWF0IjoxNzEzNDMxNTMxLCJleHAiOjE3MTYwMjM1MzF9.PCn7UzxPFe5NCtZgWhMkGxbDA3mGsHX9Y32zND1GhPs
+
+
+###Password Reset Endpoint
+POST http://localhost:3001/v1/user/reset-password
+Content-Type: application/json
+
+{
+    "email": "xyzp@gmail.com"
+}
+
+
+###Update new password
+PATCH  http://localhost:3001/v1/user/reset-password
+Content-Type: application/json
+
+{
+    "email": "xyzp@gmail.com",
+    "pin": 494046  ,
+    "newPassword": "password1"
+}
