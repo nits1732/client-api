@@ -7,6 +7,7 @@ const {createAccessJWT, createRefreshJWT}= require("../helpers/jwt.helper")
 const {userAuthorization} = require("../middlewares/authorization.middlewares")
 const {setPasswordResetPin, getPinByEmailPin, deletePin} = require("../model/ResetPin/ResetPin.model")
 const { emailProcesser } = require("../helpers/email.helper")
+const { resetPassReqValidation, updatePassValidation } = require("../middlewares/formValidation.middleware")
 router.all("/",(req, res,next)=>{
     // console.log(name)
     // res.json({message:"Return from User Router"})
@@ -92,7 +93,7 @@ router.post("/login",async (req,res)=>{
 //     }
 //     res.json({status:"error", message:"If the email Exist , the password reset pin will be send sortly"});
 // })
-router.post("/reset-password", async (req, res) => {
+router.post("/reset-password", resetPassReqValidation, async (req, res) => {
     const { email } = req.body;
     // Early exit if email is not provided
     if (!email) {
@@ -122,7 +123,7 @@ router.post("/reset-password", async (req, res) => {
 });
 
 
-router.patch("/reset-password",async(req,res)=>{
+router.patch("/reset-password",updatePassValidation, async(req,res)=>{
     const {email, pin, newPassword}=req.body;
     const getPin= await getPinByEmailPin(email,pin)
     if(getPin._id){
