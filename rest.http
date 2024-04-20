@@ -49,6 +49,11 @@ Content-Type: application/json
 
 {
     "email": "xyzp@gmail.com",
-    
+    "pin": "123456",
     "newPassword": "password1"
 }
+
+
+###user logout endpoint
+DELETE http://localhost:3001/v1/user/logout
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inh5enBAZ21haWwuY29tIiwiaWF0IjoxNzEzNTk4OTMyLCJleHAiOjE3MTM1OTk4MzJ9.Cz-ZKHdE4sYhIVWUWRDCJZL9BOcasj6a0ODv4sZ1z2o

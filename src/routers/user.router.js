@@ -1,13 +1,14 @@
 const express=require("express")
 const router=express.Router()
 const {route, notify}=require("./ticket.router")
-const {insertUser, getUserByEmail, getUserById, updatePassword} = require("../model/user/user.model")
+const {insertUser, getUserByEmail, getUserById, updatePassword, storeUserRefreshJWT} = require("../model/user/user.model")
 const {hashPassword, comparePassword}= require("../helpers/bcrypt.helper")
 const {createAccessJWT, createRefreshJWT}= require("../helpers/jwt.helper")
 const {userAuthorization} = require("../middlewares/authorization.middlewares")
 const {setPasswordResetPin, getPinByEmailPin, deletePin} = require("../model/ResetPin/ResetPin.model")
 const { emailProcesser } = require("../helpers/email.helper")
 const { resetPassReqValidation, updatePassValidation } = require("../middlewares/formValidation.middleware")
+const { deleteJWT } = require("../helpers/redis.helper")
 router.all("/",(req, res,next)=>{
     // console.log(name)
     // res.json({message:"Return from User Router"})
@@ -145,5 +146,17 @@ router.patch("/reset-password",updatePassValidation, async(req,res)=>{
         }
     }
     res.json({status:"error", message:"Unable to update the password"});
+})
+
+router.delete("/logout" , userAuthorization ,async (req, res)=>{
+    // this is comming from database-->assumption
+    const {authorization} = req.headers;
+    const _id= req.userId
+    deleteJWT(authorization)
+    const result = await storeUserRefreshJWT(_id, '')
+    if(result._id){
+        return res.json({status:"success", message:"Logged Out Successfully"})
+    }
+    res.json({status:"error", message:"Unable to log out"})
 })
 module.exports=router;
