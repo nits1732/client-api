@@ -26,12 +26,12 @@ Description
 ### Ticket Api Resources 
 | #  | Routers            |Verbs   | Progress | Is Private | Description             |
 ......................................................................................
-|1   |`/v1/ticket`                  |GET     |TODO     |YES          |Get all ticket for the logged in user
-|2   |`/v1/ticket/{id}`             |GET     |TODO     |Yes          |Get all ticket details
+|1   |`/v1/ticket`                  |GET     |DONE     |YES          |Get all ticket for the logged in user
+|2   |`/v1/ticket/{id}`             |GET     |DONE     |Yes          |Get all ticket details
 |3   |`/v1/ticket/`                 |POST    |DONE     |YES          |Create New Ticket
-|4   |`/v1/ticket/{id}`             |PUT     |TODO     |YES          |Update ticket detail i.e reply message
-|5   |`/v1/ticket/close-ticket/{id}`|PUT     |TODO     |YES          |Update ticket detail i.e reply message
-|6   |`/v1/ticket/delete/{id}`      |Delete  |TODO     |YES          |Delete a ticket
+|4   |`/v1/ticket/{id}`             |PUT     |DONE     |YES          |Update ticket detail i.e reply message
+|5   |`/v1/ticket/close-ticket/{id}`|PUT     |DONE     |YES          |Update ticket detail i.e reply message
+|6   |`/v1/ticket/delete/{id}`      |Delete  |DONE     |YES          |Delete a ticket
 
 
 
