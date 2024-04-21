@@ -10,7 +10,7 @@
 // delete ticket from mongodb
 
 const express=require("express");
-const { insertTicket, getTickets } = require("../model/ticket/Ticket.model");
+const { insertTicket, getTickets, getTicketById } = require("../model/ticket/Ticket.model");
 const { userAuthorization } = require("../middlewares/authorization.middlewares");
 const router=express.Router()
 
@@ -53,6 +53,20 @@ router.get("/", userAuthorization, async(req,res)=>{
     try{
         const userId= req.userId
         const result= await getTickets(userId);
+        console.log(result);
+        return res.json({status:"success",result})
+        
+    }catch(error){
+        res.json({status:"error",message:error.message})
+    }
+});
+// get ticket for a specific id
+router.get("/:_id", userAuthorization, async(req,res)=>{
+    console.log(req.params)
+    try{
+        const {_id}= req.params
+        const userId= req.userId
+        const result= await getTicketById(_id,userId);
         console.log(result);
         return res.json({status:"success",result})
         
