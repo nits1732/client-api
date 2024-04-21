@@ -28,7 +28,7 @@ Description
 ......................................................................................
 |1   |`/v1/ticket`                  |GET     |TODO     |YES          |Get all ticket for the logged in user
 |2   |`/v1/ticket/{id}`             |GET     |TODO     |Yes          |Get all ticket details
-|3   |`/v1/ticket/`                 |POST    |TODO     |YES          |Create New Ticket
+|3   |`/v1/ticket/`                 |POST    |DONE     |YES          |Create New Ticket
 |4   |`/v1/ticket/{id}`             |PUT     |TODO     |YES          |Update ticket detail i.e reply message
 |5   |`/v1/ticket/close-ticket/{id}`|PUT     |TODO     |YES          |Update ticket detail i.e reply message
 |6   |`/v1/ticket/delete/{id}`      |Delete  |TODO     |YES          |Delete a ticket
