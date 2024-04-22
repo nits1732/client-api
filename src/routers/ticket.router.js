@@ -12,6 +12,7 @@
 const express=require("express");
 const { insertTicket, getTickets, getTicketById , updateClientReply, updateStatusClose, deleteTicket} = require("../model/ticket/Ticket.model");
 const { userAuthorization } = require("../middlewares/authorization.middlewares");
+const { createNewTicketValidation, replyTicketValidation } = require("../middlewares/formValidation.middleware");
 const router=express.Router()
 
 
@@ -20,7 +21,7 @@ router.all("/",(req, res,next)=>{
     next();
 })
 
-router.post("/", userAuthorization, async(req,res)=>{
+router.post("/",createNewTicketValidation, userAuthorization, async(req,res)=>{
     try{
         const {subject, sender , message}= req.body;
         const user= req.userId
@@ -75,7 +76,7 @@ router.get("/:_id", userAuthorization, async(req,res)=>{
     }
 });
 // reply to a ticket
-router.put("/:_id", userAuthorization, async(req,res)=>{
+router.put("/:_id",replyTicketValidation, userAuthorization, async(req,res)=>{
     try{
         const {message,sender}= req.body
         const {_id}= req.params
